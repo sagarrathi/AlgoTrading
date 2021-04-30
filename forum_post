@@ -1,0 +1,45 @@
+cerebro not accessible inside strategy during live trading:
+
+Using following code inside **Strategy Class**: 
+
+
+def __init__(self):
+    
+        self.start_datetime=self.datas[0].p.fromdate
+        
+        self.start_portfolio_value = cerebro.broker.getvalue()
+
+
+Gives Following error:
+
+
+~/notebook/KRH/start.py in __init__(self)
+     86 
+     87         self.start_datetime=self.datas[0].p.fromdate
+---> 88 
+     89         self.start_portfolio_value = cerebro.broker.getvalue()
+     90 
+
+NameError: name 'cerebro' is not defined
+
+Problem is that while backtesting it works fine.
+During live trading it complains about the " cerebro not defined " error.
+
+Here is my code which I used for running: 
+
+
+if __name__=='__main__':
+cerebro=bt.Cerebro()
+        ticker_name="TATAMOTOR-STK-NSE"
+
+    ibstore = bt.stores.IBStore(host='127.0.0.1', port=7496, clientId=35)
+    cerebro.broker = ibstore.getbroker()
+
+    data = bt.feeds.IBData(dataname=ticker_name,fromdate=datetime.datetime(2021, 2, 1))
+    cerebro.adddata(data)
+    cerebro.resampledata(data, timeframe=bt.TimeFrame.Minutes, compression=5)
+    
+    cerebro.addstrategy(StartAction)
+    
+    cerebro.run()
+
