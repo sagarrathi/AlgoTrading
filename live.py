@@ -1,23 +1,6 @@
+from backfiller import backfill_now
 
-# Old Csv to sql
-from csv_to_sql import sql_ingester
-import sqlalchemy
-
-data_dir="./Data"
-sql_obj = sqlalchemy.create_engine('postgresql://krh:krh@123@localhost:5432/krh')
-df=sql_ingester(data_dir, sql_obj, False)
-####################################################################################################################
-
-import pandas as pd
-
-sql_obj = sqlalchemy.create_engine('postgresql://krh:krh@123@localhost:5432/krh')
-
-df_1min = pd.read_sql_table('tatamotor_1min', sql_obj, parse_dates={'date': {'format': '%Y-%m-%d %H:%M:%S'}})
-df_5mins = pd.read_sql_table('tatamotor_5mins', sql_obj, parse_dates={'date': {'format': '%Y-%m-%d %H:%M:%S'}})
-
-df_time_frames=[df_5mins]
-df_time_frames[0].head()
-#############################################################
+df_dict=backfill_now(port=7496, clientId=23, tickers=['TATAMOTOR'], duration="20 D", bar_size="5 mins")
 
 
 
@@ -40,7 +23,7 @@ if __name__=='__main__':
     #################################################################
     
     # Data preparation
-    back_data=bt.feeds.PandasData(dataname=df_time_frames[0],
+    back_data=bt.feeds.PandasData(dataname=df_dict[0],
                                   datetime=0,
                                   fromdate=datetime.datetime(2021, 2, 1))
     data = bt.feeds.IBData(dataname=ticker_name, backtfill_from=back_data)
