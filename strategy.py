@@ -342,7 +342,7 @@ class ReversalAction(bt.Strategy):
         ########################################################################
         
         
-#         self.log("Close: "+str(close_p)+
+        self.log("Close: "+str(close_p))
 #                 " Long Trend:"+long_trend+
 #                 " Short Trend:"+short_trend+
 #                 " Area :"+area_of_value+str(area)+

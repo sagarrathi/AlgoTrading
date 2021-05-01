@@ -1,8 +1,21 @@
+import sqlalchemy
+import pandas as pd
+
+sql_obj = sqlalchemy.create_engine('postgresql://krh:krh@123@localhost:5432/krh')
+
+df_1min = pd.read_sql_table('tatamotor_1min', sql_obj, parse_dates={'date': {'format': '%Y-%m-%d %H:%M:%S'}})
+df_5mins = pd.read_sql_table('tatamotor_5mins', sql_obj, parse_dates={'date': {'format': '%Y-%m-%d %H:%M:%S'}})
+
+df_time_frames=[df_5mins]
+df_time_frames[0].head()
+#############################################################
+
+
+
 import numpy as np
 import backtrader as bt
-from start_reversal_price_action import ReversalAction
+from strategy import ReversalAction
 import datetime
-
 
 if __name__=='__main__':
 
@@ -10,15 +23,21 @@ if __name__=='__main__':
     cerebro=bt.Cerebro()
     ###############################
 
-    
-    deployment=""
     ticker_name="TATAMOTOR-STK-NSE"
+    
     ######### Add data to cerebro############   
     ibstore = bt.stores.IBStore(host='127.0.0.1', port=7496, clientId=35)
     cerebro.broker = ibstore.getbroker()
+    #################################################################
     
-    data = bt.feeds.IBData(dataname=ticker_name)
+    # Data preparation
+    back_data=bt.feeds.PandasData(dataname=df_time_frames[0],
+                                  datetime=0,
+                                  fromdate=datetime.datetime(2021, 2, 1))
+    data = bt.feeds.IBData(dataname=ticker_name, backtfill_from=back_data)
+    
     cerebro.adddata(data)
+    ###################################################
     
     cerebro.resampledata(data, timeframe=bt.TimeFrame.Minutes, compression=5)
     

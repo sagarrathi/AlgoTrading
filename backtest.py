@@ -5,8 +5,6 @@ sql_obj = sqlalchemy.create_engine('postgresql://krh:krh@123@localhost:5432/krh'
 
 df_1min = pd.read_sql_table('tatamotor_1min', sql_obj, parse_dates={'date': {'format': '%Y-%m-%d %H:%M:%S'}})
 df_5mins = pd.read_sql_table('tatamotor_5mins', sql_obj, parse_dates={'date': {'format': '%Y-%m-%d %H:%M:%S'}})
-df_15mins = pd.read_sql_table('tatamotor_15mins', sql_obj, parse_dates={'date': {'format': '%Y-%m-%d %H:%M:%S'}})
-df_1day = pd.read_sql_table('tatamotor_1day', sql_obj, parse_dates={'date': {'format': '%Y-%m-%d %H:%M:%S'}})
 
 df_time_frames=[df_5mins]
 df_time_frames[0].head()
