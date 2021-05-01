@@ -55,7 +55,7 @@ if __name__=='__main__':
                         reversal_tol_factor=1.5,
                         breakout_tol_factor=.3,
                         
-                        order_time="15:10",
+                        order_time="15:00",
                         closing_time="15:10",
                         
                         show_trades= False,
