@@ -46,15 +46,3 @@ def kernel_restarter():
     from IPython.display import display_html
     display_html("<script>Jupyter.notebook.kernel.restart()</script>",raw=True)
 kernel_restarter()
-
-
-# Old Csv to sql
-from csv_to_sql import sql_ingester
-data_dir="./Data"
-
-import sqlalchemy
-sql_obj = sqlalchemy.create_engine('postgresql://krh:krh@123@localhost:5432/krh')
-    
-df=sql_ingester(data_dir, sql_obj, False)
-
-####################################################################################################################

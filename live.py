@@ -1,4 +1,13 @@
+
+# Old Csv to sql
+from csv_to_sql import sql_ingester
 import sqlalchemy
+
+data_dir="./Data"
+sql_obj = sqlalchemy.create_engine('postgresql://krh:krh@123@localhost:5432/krh')
+df=sql_ingester(data_dir, sql_obj, False)
+####################################################################################################################
+
 import pandas as pd
 
 sql_obj = sqlalchemy.create_engine('postgresql://krh:krh@123@localhost:5432/krh')
@@ -36,10 +45,11 @@ if __name__=='__main__':
                                   fromdate=datetime.datetime(2021, 2, 1))
     data = bt.feeds.IBData(dataname=ticker_name, backtfill_from=back_data)
     
+    cerebro.resampledata(data, timeframe=bt.TimeFrame.Minutes, compression=5)
+    
     cerebro.adddata(data)
     ###################################################
     
-    cerebro.resampledata(data, timeframe=bt.TimeFrame.Minutes, compression=5)
     
     
     ######### Add stratedgy to Cerebro ###############
