@@ -345,7 +345,29 @@ class ReversalAction(bt.Strategy):
                     self.close(exectype=bt.Order.Market, size=self.position.size)
         ########################################################################
         
-        
+        def notify_data(self,data, status, *args, **kwargs):
+            if status==data.LIVE:
+                print("Data: Live")
+            elif status==data.DELAYED:
+                print("Data: Delayed, Backfilling")
+            
+
+
+            if status==data.CONNECTED:
+                print("Data: Conncected")
+            elif status==data.DISCONNECTED:
+                print("Data: Disconncected")
+            
+
+            if status==data.CONNBROKEN:
+                print("Data: Connection Broken")
+            
+            if status==data.NOTSUBSCRIBED:
+                print("Data: NOt Subscribed")
+            
+            
+            
+
         # self.log("Close: "+str(close_p))
 #                 " Long Trend:"+long_trend+
 #                 " Short Trend:"+short_trend+

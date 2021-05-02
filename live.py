@@ -24,9 +24,13 @@ if __name__=='__main__':
     back_data=bt.feeds.PandasData(dataname=df_dict[0],
                                   datetime=0,
                                   fromdate=datetime.datetime(2021, 2, 1))
-    data = bt.feeds.IBData(dataname=ticker_name, backtfill_from=back_data)
+    data = bt.feeds.IBData(dataname=ticker_name, 
+                            backtfill_from=back_data,
+                            rtbar=True,
+                            timeframe=bt.TimeFrame.Minutes, 
+                            compression=5)
     
-    cerebro.resampledata(data, timeframe=bt.TimeFrame.Minutes, compression=5)
+    # cerebro.resampledata(data, )
     
     cerebro.adddata(data)
     ###################################################
