@@ -26,7 +26,7 @@ if __name__=='__main__':
                                   fromdate=datetime.datetime(2021, 2, 1))
     data = bt.feeds.IBData(dataname=ticker_name, 
                             backtfill_from=back_data,
-                            rtbar=True,
+                            # rtbar=True,
                             timeframe=bt.TimeFrame.Minutes, 
                             compression=5)
     
@@ -39,15 +39,15 @@ if __name__=='__main__':
     
     ######### Add stratedgy to Cerebro ###############
     sr_levels=np.array([339.01,324.11,319.38,312.96,304.37,299.17,295.17,293.48,291.24,283.31]) 
-    cerebro.addstrategy(ReversalAction, 
+    cerebro.addstrategy(ReversalAction,
                         short_period=50,
                         long_period=200,
                         sr_levels=sr_levels,
         
                         reversal_tol_factor=.8,
-                        breakout_tol_factor=.3,
+                        breakout_tol_factor=.5,
                         
-                        order_time="15:10",
+                        order_time="14:30",
                         closing_time="15:10",
                         
                         show_trades= False,
@@ -56,13 +56,14 @@ if __name__=='__main__':
                         strike_at="sr_price",
                         order_at="mid_bar_price",
                         
-                        target_percentage=2,
+                        target_percentage=1.8,
                         stop_percentage=1.2,
 
                         execute_breakout=True,
                         allow_shorting=True,
                        
-                        cerebro=cerebro)
+                        cerebro=cerebro,
+                       )
     
     ##########################################
 

@@ -294,11 +294,11 @@ class ReversalAction(bt.Strategy):
         order_minute=self.params.order_time.split(":")[1]
         order_minute=int(order_minute)
         
-        
+        # cash=cerebro.broker.getvalue()
+        # print("\nCASH\n",cash)
         
         if self.data.datetime.time() < datetime.time(order_hour,order_minute) \
-            and not self.position.size\
-            and (order_signal=="Buy" or order_signal=="Sell"):
+            and not self.position.size and (order_signal=="Buy" or order_signal=="Sell"):
 
             order_at=self.params.order_at
             if order_at=="close_price":
@@ -312,6 +312,7 @@ class ReversalAction(bt.Strategy):
             cash=cash*(1-0.05)
             no_of_shares=int(cash/order_price)
             
+
             lots=int(no_of_shares/100)
             size=lots*100
             
