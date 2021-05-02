@@ -2,8 +2,6 @@ from backfiller import backfill_now
 
 df_dict=backfill_now(port=7496, clientId=23, tickers=['TATAMOTOR'], duration="20 D", bar_size="5 mins")
 
-
-
 import numpy as np
 import backtrader as bt
 from strategy import ReversalAction

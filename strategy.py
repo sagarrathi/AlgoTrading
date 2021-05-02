@@ -32,11 +32,6 @@ class ReversalAction(bt.Strategy):
         print(dt,txt)
         pass
 
-    def tolerance(self,base_x,y,tolerance, dt=None):
-        z=(base_x-y)/base_x
-        z=np.abs(z)*100
-        z=z<tolerance
-        return z
         
         
     ############## Copied from Documenation #####################
@@ -129,7 +124,16 @@ class ReversalAction(bt.Strategy):
                         tablefmt="grid"))
 
     ###############################################    
-    
+
+    def tolerance(self, base_x,y,tolerance, dt=None):
+        z=(base_x-y)/base_x
+        z=np.abs(z)*100
+        most_near_index=np.argmin(z)
+        most_near_number_percentage=z[most_near_index]
+        if most_near_number_percentage <tolerance:
+            return most_near_index
+        else: 
+            return "" 
     
     def next(self):
         mid_bar_value= (self.datas[0].high[0] + self.datas[0].low[0] )/2
@@ -163,21 +167,21 @@ class ReversalAction(bt.Strategy):
         #################  SR Area ################################
         sr=self.params.sr_levels
         
-        
         tol_factor=self.params.reversal_tol_factor
         if short_trend=="Up":
             z=self.tolerance(high_p,sr,tol_factor)
         else:
             z=self.tolerance(low_p,sr,tol_factor)
     
-        z=np.matmul(z,np.transpose(sr))
-    
-        if z>0:
-            area_of_value="In"
-            area=z
-        else:
+        if z=="":
             area_of_value="Out"
             area=""
+        else: 
+            area_of_value="In"
+            area=sr[z]
+        
+
+            
         ###############################################################
         
         

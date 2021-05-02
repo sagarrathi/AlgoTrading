@@ -52,10 +52,10 @@ if __name__=='__main__':
                         long_period=200,
                         sr_levels=sr_levels,
         
-                        reversal_tol_factor=1.5,
-                        breakout_tol_factor=.3,
+                        reversal_tol_factor=.8,
+                        breakout_tol_factor=.5,
                         
-                        order_time="15:00",
+                        order_time="14:30",
                         closing_time="15:10",
                         
                         show_trades= False,
@@ -64,7 +64,7 @@ if __name__=='__main__':
                         strike_at="sr_price",
                         order_at="mid_bar_price",
                         
-                        target_percentage=2,
+                        target_percentage=1.8,
                         stop_percentage=1.2,
 
                         execute_breakout=True,
