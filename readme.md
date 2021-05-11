@@ -8,7 +8,7 @@ __And:__
 
 [![Backtest Status](https://img.shields.io/badge/Backtesting%20-Passed-brightgreen.svg)](/backtest.py) 
 [![Live Status](https://img.shields.io/badge/Live%20-Failed-red.svg)](/live.py)
-[![Release](https://img.shields.io/badge/Release-v1.0-blue)](/releases/tag/v1.0)
+[![Release](https://img.shields.io/badge/Release-v1.0-blue)](./releases/tag/v1.0)
 
 This code is for various Quants and Geeks who like to algo trade. 
 
@@ -131,7 +131,8 @@ Go back to **Step 2.**
 | Y | Year  |
 
 
-## License
+## Copyright
+Copyright 2021 Sagar Rathi
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](/LICENSE.txt)
 
 
