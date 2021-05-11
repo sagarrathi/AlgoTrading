@@ -8,7 +8,7 @@ __And:__
 
 [![Backtest Status](https://img.shields.io/badge/Backtesting%20-Passed-brightgreen.svg)](/backtest.py) 
 [![Live Status](https://img.shields.io/badge/Live%20-Failed-red.svg)](/live.py)
-[![Release](https://img.shields.io/badge/Release-v1.0-blue)](releases/latest)
+[![Release](https://img.shields.io/badge/Release-v1.0-blue)](releases/latest/)
 
 This code is for various Quants and Geeks who like to algo trade. 
 
