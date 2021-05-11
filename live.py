@@ -1,10 +1,26 @@
-from backfiller import backfill_now
+tickers=['TATAMOTOR']
+bar_size="1 min"
 
-df_dict=backfill_now(port=7496, clientId=23, tickers=['TATAMOTOR'], duration="20 D", bar_size="5 mins")
+# from backfiller import backfill_now
+# backfill_now(port=7496, clientId=35, tickers=tickers, duration="20 D", bar_size=bar_size)
+
+
+import sqlalchemy
+sql_obj = sqlalchemy.create_engine('postgresql://krh:krh@123@localhost:5432/krh')
+
+import pandas as pd
+df_dict=[]
+for ticker in tickers:
+    sql_table_name=ticker.lower()+"_"+bar_size.replace(" ","")
+    df = pd.read_sql_table(sql_table_name, sql_obj, parse_dates={'date': {'format': '%Y-%m-%d %H:%M:%S'}})
+    df_dict.append(df)
+
+
+
+import backtrader as bt
+from strategy.ReversalAction import ReversalAction
 
 import numpy as np
-import backtrader as bt
-from strategy import ReversalAction
 import datetime
 
 if __name__=='__main__':
@@ -16,21 +32,23 @@ if __name__=='__main__':
     ticker_name="TATAMOTOR-STK-NSE"
     
     ######### Add data to cerebro############   
-    ibstore = bt.stores.IBStore(host='127.0.0.1', port=7496, clientId=35)
-    cerebro.broker = ibstore.getbroker()
-    #################################################################
     
     # Data preparation
     back_data=bt.feeds.PandasData(dataname=df_dict[0],
                                   datetime=0,
-                                  fromdate=datetime.datetime(2021, 2, 1))
-    data = bt.feeds.IBData(dataname=ticker_name, 
-                            backtfill_from=back_data,
-                            # rtbar=True,
-                            timeframe=bt.TimeFrame.Minutes, 
-                            compression=5)
+                                  fromdate=datetime.datetime(2021, 2, 1)
+                                  )
+
+    data = bt.feeds.IBData(dataname=ticker_name,
+                            backfill_from=back_data,
+                            host='127.0.0.1', port=7496, clientId=35    
+                            )
     
-    # cerebro.resampledata(data, )
+    cerebro.resampledata(data,timeframe=bt.TimeFrame.Minutes, 
+                            compression=5,
+                            takelate=True,
+                            )
+                        
     
     cerebro.adddata(data)
     ###################################################
@@ -47,8 +65,8 @@ if __name__=='__main__':
                         reversal_tol_factor=.8,
                         breakout_tol_factor=.5,
                         
-                        order_time="14:30",
-                        closing_time="15:10",
+                        order_time="15:20",
+                        closing_time="18:00",
                         
                         show_trades= False,
                         show_trade_object=False,
@@ -60,7 +78,7 @@ if __name__=='__main__':
                         stop_percentage=1.2,
 
                         execute_breakout=True,
-                        allow_shorting=True,
+                        allow_shorting=False,
                        
                         cerebro=cerebro,
                        )

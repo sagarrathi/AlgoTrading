@@ -22,7 +22,6 @@ def backfill_now(port=7496, clientId=23, tickers=['TATAMOTOR'], duration="20 D",
     
     ##################################################
 
-
     ##########  From Datetime #############
     import datetime
     today_date=(datetime.datetime.today().strftime("%Y%m%d %H:%M:%S"))
@@ -35,14 +34,13 @@ def backfill_now(port=7496, clientId=23, tickers=['TATAMOTOR'], duration="20 D",
     multi_historical_retriver(ticker_list=tickers,
                             app_obj=app, 
                             from_date=today_date,
-                            duration="20 D",
-                            bar_size="5 mins",
+                            duration=duration,
+                            bar_size=bar_size,
                             event=event
                             )
 
 
     ########################################
-
 
     # Old Csv to sql
     from csv_to_sql import sql_ingester
@@ -52,20 +50,3 @@ def backfill_now(port=7496, clientId=23, tickers=['TATAMOTOR'], duration="20 D",
     sql_obj = sqlalchemy.create_engine('postgresql://krh:krh@123@localhost:5432/krh')
     df=sql_ingester(data_dir, sql_obj, False)
     ####################################################################################################################
-
-    # SQL to pandas
-    import pandas as pd
-
-    sql_obj = sqlalchemy.create_engine('postgresql://krh:krh@123@localhost:5432/krh')
-
-    df_dict=[]
-    for ticker in tickers:
-        sql_table_name=ticker.lower()+"_"+bar_size.replace(" ","")
-        df = pd.read_sql_table(sql_table_name, sql_obj, parse_dates={'date': {'format': '%Y-%m-%d %H:%M:%S'}})
-        df_dict.append(df)
-    
-    
-    return df_dict
-    #############################################################
-
-

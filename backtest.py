@@ -16,7 +16,7 @@ df_time_frames[0].head()
 
 import backtrader as bt
 
-from strategy import ReversalAction
+from strategy.ReversalAction import ReversalAction
 from analyzer import printTradeAnalysis, printSQN
 
 import datetime
@@ -36,11 +36,17 @@ if __name__=='__main__':
                         fromdate=datetime.datetime(2021, 2, 1),
 
                         )
+        
+    
+        #cerebro.resampledata(data,timeframe=bt.TimeFrame.Minutes, 
+        #                        compression=2,
+        #                        )
+
         cerebro.adddata(data)
 
         
-    #Set Cash
-    cerebro.broker.setcash(160000)
+    #Set Caah
+    cerebro.broker.setcash(1000000)
     
     
     
@@ -56,6 +62,7 @@ if __name__=='__main__':
                         breakout_tol_factor=.5,
                         
                         order_time="14:30",
+               
                         closing_time="15:10",
                         
                         show_trades= False,

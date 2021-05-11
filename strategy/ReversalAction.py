@@ -125,12 +125,12 @@ class ReversalAction(bt.Strategy):
 
     ###############################################    
 
-    def tolerance(self, base_x,y,tolerance, dt=None):
+    def tolerance(self, base_x,y,tol_factor, dt=None):
         z=(base_x-y)/base_x
         z=np.abs(z)*100
         most_near_index=np.argmin(z)
         most_near_number_percentage=z[most_near_index]
-        if most_near_number_percentage <tolerance:
+        if most_near_number_percentage <tol_factor:
             return most_near_index
         else: 
             return "" 
@@ -168,15 +168,20 @@ class ReversalAction(bt.Strategy):
         sr=self.params.sr_levels
         
         tol_factor=self.params.reversal_tol_factor
+        
+        area_of_value="Out"
+        area=""
+        z=""
+        
         if short_trend=="Up":
-            z=self.tolerance(high_p,sr,tol_factor)
+            if high_p>0:
+                z=self.tolerance(base_x=high_p,y=sr,tol_factor=tol_factor)
         else:
-            z=self.tolerance(low_p,sr,tol_factor)
+            if low_p>0:
+                z=self.tolerance(base_x=low_p,y=sr,tol_factor=tol_factor)
     
-        if z=="":
-            area_of_value="Out"
-            area=""
-        else: 
+        
+        if z!="": 
             area_of_value="In"
             area=sr[z]
         
@@ -317,14 +322,14 @@ class ReversalAction(bt.Strategy):
             size=lots*100
             
             
-            if order_signal=="Buy":
+            if order_signal=="Buy" and size>0:
                 if self.params.show_trades:
                     print("-------------------Buyed---------------:",size)
                 self.order = self.buy_bracket(limitprice=buy_target, 
                                               price=order_price, 
                                               stopprice=buy_loss,
                                               size=size)
-            if order_signal=="Sell" and self.params.allow_shorting:
+            if order_signal=="Sell" and self.params.allow_shorting and size>0:
                 if self.params.show_trades:
                     print("-------------------Sold---------------",size)
                 self.order = self.sell_bracket(limitprice=sell_target, 
